@@ -3,12 +3,12 @@ import random
 from graphics import *
 import math
 import datetime
-from tqdm import tqdm
 
 #filepath = 'Int-6-10.txt'
 #filepath = 'Int-40-80 copy.txt'
 #filepath = 'Real-500-dense copy.txt'
 filepath = 'Int-500-dense copy.txt'
+#filepath = 'Int-1000-dense copy.txt'
 
 #Prim's algorithm
 def prim(filepath,Anim):
@@ -19,11 +19,10 @@ def prim(filepath,Anim):
     edgelist = file[1]
     vertices = file[2]
 
-    mx = adjmx(edgelist, edgecount,vertices)
+    mx = adjmx(edgelist, edgecount, vertices) #generates adjacency matrix (2D array that stores weights of edges between connected vertices)
 
-    mst = [ [0 for i in range (vertices)] for j in range(vertices)]
-
-    visited = [0 for i in range (vertices)]
+    mst = [ [0 for i in range (vertices)] for j in range(vertices)] #final 2D array to store completed tree
+    visited = [0 for i in range (vertices)] #At the start, no vertex has been visited so all are marked "0" in visited array
 
     start = 0 #start from first vertex
 
@@ -54,7 +53,7 @@ def prim(filepath,Anim):
         viewed = []
 
 
-        for i in tqdm(range(vertices)):
+        for i in (range(vertices)):
 
             if visited[i] == 1:
 
@@ -185,7 +184,7 @@ def init_graphics(win, edgelist, edgecount, vertices, mx, anim):
         cirs = [ [] for i in range(vertices) ]
         lines = [ [ None for j in range (n) ] for i in range(n) ]
 
-        for i in tqdm(range(n)):
+        for i in (range(n)):
             v1 = edgelist[i][0]
             v2 = edgelist[i][1]
 
@@ -205,7 +204,7 @@ def init_graphics(win, edgelist, edgecount, vertices, mx, anim):
             txt.setTextColor(color_rgb(0,200,200))
             txt.draw(win)
 
-        for i in tqdm(range(vertices)):
+        for i in (range(vertices)):
             cirs[i] = Circle(Point(pts[i][0],pts[i][1]),diam)
 
             col1 = 255
@@ -314,7 +313,7 @@ def generate_points(n):
 
 begin = datetime.datetime.now()
 
-prim(filepath, True)
+prim(filepath, False)
 
 tot_time = (datetime.datetime.now() - begin)
 
