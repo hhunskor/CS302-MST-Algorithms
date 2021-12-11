@@ -19,7 +19,7 @@ def prim(filepath,Anim):
     edgelist = file[1]
     vertices = file[2]
 
-    mx = adjmx(edgelist, edgecount)
+    mx = adjmx(edgelist, edgecount,vertices)
 
     mst = [ [0 for i in range (vertices)] for j in range(vertices)]
 
@@ -109,8 +109,8 @@ def prim(filepath,Anim):
 
 
 #Creating Adjacency Matrix
-def adjmx(edgelist, edgecount):
-    mx = [ [0 for i in range (edgecount)] for j in range (edgecount)] #creating array to store edge adjacency
+def adjmx(edgelist, edgecount, vertices):
+    mx = [ [0 for i in range (vertices)] for j in range (vertices)] #creating array to store edge adjacency
 
     count = 0 #variable to track how many matrix slots have been filled
 
@@ -122,8 +122,8 @@ def adjmx(edgelist, edgecount):
         e2 = cur_edge[1]
         cost = cur_edge[2]
 
-        mx[e1][e2] = float(cost)
-        mx[e2][e1] = float(cost)
+        mx[e1][e2] = cost
+        mx[e2][e1] = cost
 
         count += 1
 
