@@ -2,9 +2,13 @@ import sys
 import random
 from graphics import *
 import math
+import datetime
+from tqdm import tqdm
 
-filepath = 'Int-6-10.txt'
+#filepath = 'Int-6-10.txt'
+#filepath = 'Int-40-80 copy.txt'
 #filepath = 'Real-500-dense copy.txt'
+filepath = 'Int-500-dense copy.txt'
 
 #Prim's algorithm
 def prim(filepath,Anim):
@@ -17,7 +21,7 @@ def prim(filepath,Anim):
 
     mx = adjmx(edgelist, edgecount)
 
-    mst = [ [0 for i in range (edgecount)] for j in range(edgecount)]
+    mst = [ [0 for i in range (vertices)] for j in range(vertices)]
 
     visited = [0 for i in range (vertices)]
 
@@ -26,18 +30,20 @@ def prim(filepath,Anim):
     visited[0] = 1
 
     vis = 0
-    
+
     win = None
     pts = None
     edges = None
-    
+
     if Anim == True:
         win = GraphWin("My Window", 750,750, autoflush = False)
         win.setBackground(color_rgb(100,100,100))
-        
-        pts,edges = init_graphics(win,edgelist, edgecount, vertices, mx)
 
-    while vis < vertices:
+        pts,edges = init_graphics(win,edgelist, edgecount, vertices, mx,True)
+
+    treesum = 0
+
+    while 0 in visited:
 
         minval = sys.maxsize
         inf = sys.maxsize
@@ -48,7 +54,7 @@ def prim(filepath,Anim):
         viewed = []
 
 
-        for i in range (vertices):
+        for i in tqdm(range(vertices)):
 
             if visited[i] == 1:
 
@@ -66,7 +72,7 @@ def prim(filepath,Anim):
                             vert2 = j
 
         sel = [vert1,vert2]
-        
+
 
         if minval == inf:
             mst[vert1][vert2] = 0.0
@@ -74,21 +80,18 @@ def prim(filepath,Anim):
         else:
             mst[vert1][vert2] = minval
             mst[vert2][vert1] = minval
-        
+
         if Anim == True:
             prim_anim(pts,edges,win,viewed,visited,sel,mx)
-    
+
         visited[vert2] = 1
 
         vis+=1
-    
-    
-    treesum = 0
-    
-    for i in range (edgecount):
-        for j in range(edgecount):
-            treesum += (mst[i][j])
-            
+
+        treesum += minval
+
+
+
     if Anim == True:
         txt = Text(Point(375,700), "Calculated MST Weight: " + str(treesum))
         txt.setSize(20)
@@ -98,9 +101,9 @@ def prim(filepath,Anim):
         time.sleep(3)
         win.close()
 
-    print("Calculated MST weight: " + str(treesum/2.0))
-    
-    
+    print("Calculated MST weight: " + str(treesum))
+
+
 
     return mst, edgelist
 
@@ -171,62 +174,61 @@ def readfile(path):
     return edgecount, edgelist, vertices
 
 #Generate animation
-def init_graphics(win, edgelist, edgecount, vertices, mx):
+def init_graphics(win, edgelist, edgecount, vertices, mx, anim):
+    if anim == True:
+        n = len(edgelist)
 
-    n = len(edgelist)
+        pts = generate_points(vertices)
 
-    pts = generate_points(vertices)
+        diam = 8
 
-    diam = 8
+        cirs = [ [] for i in range(vertices) ]
+        lines = [ [ None for j in range (n) ] for i in range(n) ]
 
-    cirs = [ [] for i in range(vertices) ]
-    lines = [ [ None for j in range (n) ] for i in range(n) ]
+        for i in tqdm(range(n)):
+            v1 = edgelist[i][0]
+            v2 = edgelist[i][1]
 
-    for i in range(n):
-        v1 = edgelist[i][0]
-        v2 = edgelist[i][1]
+            p1 = Point(pts[v1][0],pts[v1][1])
 
-        p1 = Point(pts[v1][0],pts[v1][1])
+            p2 = Point(pts[v2][0],pts[v2][1])
 
-        p2 = Point(pts[v2][0],pts[v2][1])
+            lines[v1][v2] = Line(p1,p2)
+            lines[v1][v2].setFill('White')
+            lines[v2][v1] = lines[v1][v2]
+            lines[v1][v2].draw(win)
 
-        lines[v1][v2] = Line(p1,p2)
-        lines[v1][v2].setFill('White')
-        lines[v2][v1] = lines[v1][v2]
-        lines[v1][v2].draw(win)
+            p3 = lines[v1][v2].getCenter()
 
-        p3 = lines[v1][v2].getCenter()
+            txt = Text(p3, (edgelist[i][2]))
+            txt.setSize(15)
+            txt.setTextColor(color_rgb(0,200,200))
+            txt.draw(win)
 
-        txt = Text(p3, (edgelist[i][2]))
-        txt.setSize(15)
-        txt.setTextColor(color_rgb(0,200,200))
-        txt.draw(win)
+        for i in tqdm(range(vertices)):
+            cirs[i] = Circle(Point(pts[i][0],pts[i][1]),diam)
 
-    for i in range(vertices):
-        cirs[i] = Circle(Point(pts[i][0],pts[i][1]),diam)
+            col1 = 255
+            col2 = 255
+            col3 = 255
 
-        col1 = 255
-        col2 = 255
-        col3 = 255
+            cirs[i].setFill(color_rgb(col1,col2,col3))
+            cirs[i].setOutline(color_rgb(col1,col2,col3))
+            cirs[i].draw(win)
 
-        cirs[i].setFill(color_rgb(col1,col2,col3))
-        cirs[i].setOutline(color_rgb(col1,col2,col3))
-        cirs[i].draw(win)
-
-        txt = Text(Point(pts[i][0],pts[i][1]), i)
-        txt.setSize(12)
-        txt.setTextColor(color_rgb(255,100,100))
-        txt.draw(win)
+            txt = Text(Point(pts[i][0],pts[i][1]), i)
+            txt.setSize(12)
+            txt.setTextColor(color_rgb(255,100,100))
+            txt.draw(win)
 
 
-    update()
-    time.sleep(2)
+        update()
+        time.sleep(2)
 
-    return(cirs,lines)
+        return(cirs,lines)
 
 
 def prim_anim(pts,edges,win,viewed,visited,sel,mx):
-    
     if not None in edges:
         a = sel[0]
         b = sel[1]
@@ -234,7 +236,7 @@ def prim_anim(pts,edges,win,viewed,visited,sel,mx):
         pts[a].setOutline('Green')
         pts[a].setWidth(10)
         win.update()
-        
+
         for i in range(len(viewed)):
             x = viewed[i][0]
             y = viewed[i][1]
@@ -244,25 +246,25 @@ def prim_anim(pts,edges,win,viewed,visited,sel,mx):
 
         win.update()
         time.sleep(1)
-        
+
         txt = None
         txt2 = None
-        
+
         if edges[a][b] != None:
             txt = Text(Point(375,700),"Edge " + str(a) + " == " + str(b) + " chosen")
             txt.setSize(20)
             txt.setTextColor('White')
             txt.draw(win)
-            
+
             txt2 = Text(Point(375,720),"Weight " + str(mx[a][b]))
             txt2.setSize(15)
             txt2.setTextColor('White')
             txt2.draw(win)
-        
+
         win.update()
-        
+
         ct = 0
-        
+
         while ct < 10 and edges[a][b] != None:
             edges[a][b].setFill('Red')
             win.update()
@@ -271,27 +273,27 @@ def prim_anim(pts,edges,win,viewed,visited,sel,mx):
             win.update()
             time.sleep(0.1)
             ct+=1
-            
-        
+
+
         pts[b].setFill('Green')
         pts[b].setOutline('Green')
         pts[b].setWidth(10)
-        
+
         win.update()
         time.sleep(1)
-                
+
         for i in range(len(viewed)):
             x = viewed[i][0]
             y = viewed[i][1]
-            
+
             if [x,y] != sel:
                 edges[x][y].setWidth(1)
                 edges[x][y].setFill('White')
-       
-        if edges[a][b] != None:        
+
+        if edges[a][b] != None:
             txt.undraw()
             txt2.undraw()
-        
+
         win.update()
         time.sleep(2)
 
@@ -299,7 +301,7 @@ def generate_points(n):
 
     pts = [ [] for i in range(n)] #list to store coordinates
 
-    for i in range(n):
+    for i in (range(n)):
         x = random.randint(20,740)
         y = random.randint(20,680)
 
@@ -310,6 +312,10 @@ def generate_points(n):
 
 
 
+begin = datetime.datetime.now()
+
 prim(filepath, True)
 
+tot_time = (datetime.datetime.now() - begin)
 
+print("Runtime: " + str(tot_time))
