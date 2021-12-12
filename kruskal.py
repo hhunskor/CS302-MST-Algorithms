@@ -3,9 +3,10 @@ import random
 from graphics import *
 import math
 import argparse
+from distutils.util import strtobool
 
 class Graph:
-    def __init__(self, num_vert, edgelist) :
+    def __init__(self, num_vert, edgelist, Anim) :
         self.num_vert = num_vert
         self.edgelist = edgelist # contains Edge classes
         self.mst = []
@@ -13,17 +14,18 @@ class Graph:
         self.rank = []
 
         # animation-related variables
-        self.win = GraphWin("My Window", 750, 750, autoflush=False)
-        self.win.setBackground(color_rgb(100, 100, 100))
-        self.pts, self.edges = init_graphics(self.win, self.edgelist, num_vert)
-        self.speed = 20 / len(edgelist)
+        if Anim:
+            self.win = GraphWin("My Window", 750, 750, autoflush=False)
+            self.win.setBackground(color_rgb(100, 100, 100))
+            self.pts, self.edges = init_graphics(self.win, self.edgelist, num_vert)
+            self.speed = 20 / len(edgelist)
 
     def FindParent (self, vert) : # has path compression
         if vert != self.parent[vert] :
             self.parent[vert] = self.FindParent(self.parent[vert])
         return self.parent[vert]
 
-    def Kruskal (self) :
+    def Kruskal (self, Anim) :
         # Sort edges by weight
         self.edgelist.sort(key = lambda Edge : Edge.weight)
 
@@ -40,10 +42,11 @@ class Graph:
 
             # if parents are in different subsets, add the edge to the spanning tree
             if root1 != root2 :
-               self.anim(edge, True) # animate for MST edge
+               if Anim:
+                   self.anim(edge, True) # animate for MST edge
                self.mst.append(edge)
 
-               # choose max rank and do union
+               # union by rank
                if self.rank[root1] < self.rank[root2] :
                     self.rank[root2] += 1
                     self.parent[root1] = root2
@@ -51,19 +54,23 @@ class Graph:
                     self.rank[root1] += 1
                     self.parent[root2] = root1
             else:
-                self.anim(edge, False) # animate for non-MST edge
+                if Anim:
+                    self.anim(edge, False) # animate for non-MST edge
 
         cost = 0
         for edge in self.mst :
             cost += edge.weight
 
-        txt = Text(Point(375, 700), "Calculated MST Weight: " + str(cost))
-        txt.setSize(20)
-        txt.draw(self.win)
-        txt.setFill('White')
-        self.win.update()
-        time.sleep(10)
-        self.win.close()
+        print("Calculated MST Weight: " + str(cost))
+
+        if Anim:
+            txt = Text(Point(375, 700), "Calculated MST Weight: " + str(cost))
+            txt.setSize(20)
+            txt.draw(self.win)
+            txt.setFill('White')
+            self.win.update()
+            time.sleep(10)
+            self.win.close()
 
     def anim(self, edge, MST):
         a, b = edge.src, edge.dst
@@ -203,11 +210,12 @@ def generate_points(n):
         pts[i].append(y)
     return pts
 
-# Kruskal Path Compression
+# Kruskal Path Compression and Union by Rank
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-input', '-i', type=str, default='Int-6-10.txt',
                         help='Data input file, Default [Int-6-10.txt]')
+    parser.add_argument('-animation', '-a', type=strtobool, default=True)
     args = parser.parse_args()
 
     filepath = args.input
@@ -217,8 +225,9 @@ def main():
     for e in edgelist:
         edges.append(Edge(e[0], e[1], e[2]))
 
-    graph = Graph(vertices, edges)
-    graph.Kruskal()
+    A = args.animation
+    graph = Graph(vertices, edges, A)
+    graph.Kruskal(A)
 
 if __name__ == "__main__" :
     main()
