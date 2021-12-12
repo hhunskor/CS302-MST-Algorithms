@@ -1,0 +1,29 @@
+python primlist.py -a False -i Int-6-10.txt
+python primlist.py -a False -i Int-40-80.txt
+python primlist.py -a False -i Int-500-dense.txt
+python primlist.py -a False -i Int-1000-2000.txt
+python primlist.py -a False -i Int-1000-dense.txt
+python primlist.py -a False -i Real-50-100.txt
+python primlist.py -a False -i Real-500-1000.txt
+python primlist.py -a False -i Real-500-dense.txt
+python primlist.py -a False -i Real-1000-2000.txt
+
+python prims2.py -a False -i Int-6-10.txt
+python prims2.py -a False -i Int-40-80.txt
+python prims2.py -a False -i Int-500-dense.txt
+python prims2.py -a False -i Int-1000-2000.txt
+python prims2.py -a False -i Int-1000-dense.txt
+python prims2.py -a False -i Real-50-100.txt
+python prims2.py -a False -i Real-500-1000.txt
+python prims2.py -a False -i Real-500-dense.txt
+python prims2.py -a False -i Real-1000-2000.txt
+
+python kruskal.py -a False -i Int-6-10.txt
+python kruskal.py -a False -i Int-40-80.txt
+python kruskal.py -a False -i Int-500-dense.txt
+python kruskal.py -a False -i Int-1000-2000.txt
+python kruskal.py -a False -i Int-1000-dense.txt
+python kruskal.py -a False -i Real-50-100.txt
+python kruskal.py -a False -i Real-500-1000.txt
+python kruskal.py -a False -i Real-500-dense.txt
+python kruskal.py -a False -i Real-1000-2000.txt

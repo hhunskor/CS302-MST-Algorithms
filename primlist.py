@@ -1,14 +1,15 @@
+# Wright Frost
+# CS302 Group Programming Project
+# Prim's Algorithm Array Implementation
+
 import sys
 import random
 from graphics import *
 import math
 import datetime
-
-#filepath = 'Int-6-10.txt'
-#filepath = 'Int-40-80 copy.txt'
-#filepath = 'Real-500-dense copy.txt'
-filepath = 'Int-500-dense copy.txt'
-#filepath = 'Int-1000-dense copy.txt'
+import argparse
+from distutils.util import strtobool
+import csv
 
 #Prim's algorithm
 def prim(filepath,Anim):
@@ -100,11 +101,9 @@ def prim(filepath,Anim):
         time.sleep(3)
         win.close()
 
-    print("Calculated MST weight: " + str(treesum))
+    mst_sum = str(treesum)
 
-
-
-    return mst, edgelist
+    return mst_sum, mst, edgelist
 
 
 #Creating Adjacency Matrix
@@ -144,7 +143,7 @@ def readfile(path):
     for position, line in enumerate(file):
         if position == 0:
             vertices, edges = line.split()
-            print(vertices + " vertices and " + edges + " edges")
+            #print(vertices + " vertices and " + edges + " edges")
             edges = int(edges)
             vertices = int(vertices)
             edgecount = edges
@@ -165,8 +164,8 @@ def readfile(path):
 
             edgelist.append(l)
 
-        elif position == (length - 1):
-            print("sum of MST should equal " + line)
+        #elif position == (length - 1):
+            #print("sum of MST should equal " + line)
 
     datafile.close()
 
@@ -309,12 +308,24 @@ def generate_points(n):
 
     return pts
 
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-input', '-i', type=str, default='Int-6-10.txt',
+                        help='Data input file, Default [Int-6-10.txt]')
+    parser.add_argument('-animation', '-a', type=strtobool, default=True)
+    args = parser.parse_args()
 
+    print("\n", "##### PRIM REGULAR #####")
+    print("INPUT: " + args.input)
+    begin = datetime.datetime.now()
+    MST = prim("MST-Test-Files/" + args.input, args.animation)
+    print("MST: " + str(MST[0]))
+    total_time = datetime.datetime.now() - begin
+    print("TIME: " + str(total_time))
 
-begin = datetime.datetime.now()
+    with open('tests.csv', 'a', newline='') as csvfile:
+        test = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        test.writerow(['prim_reg', args.input, total_time])
 
-prim(filepath, False)
-
-tot_time = (datetime.datetime.now() - begin)
-
-print("Runtime: " + str(tot_time))
+if __name__ == "__main__" :
+    main()

@@ -1,9 +1,15 @@
+# Tom Gause
+# CS302 Group Programming Project
+# Kruskal's with Path Compression and Union by Rank
+
 import sys
 import random
 from graphics import *
 import math
 import argparse
+import datetime
 from distutils.util import strtobool
+import csv
 
 class Graph:
     def __init__(self, num_vert, edgelist, Anim) :
@@ -61,8 +67,6 @@ class Graph:
         for edge in self.mst :
             cost += edge.weight
 
-        print("Calculated MST Weight: " + str(cost))
-
         if Anim:
             txt = Text(Point(375, 700), "Calculated MST Weight: " + str(cost))
             txt.setSize(20)
@@ -71,6 +75,8 @@ class Graph:
             self.win.update()
             time.sleep(10)
             self.win.close()
+
+        return cost
 
     def anim(self, edge, MST):
         a, b = edge.src, edge.dst
@@ -126,7 +132,7 @@ class Edge:
         self.weight = w
 
 def readfile(path):
-    print("reading file...")
+    #print("reading file...")
     edgelist = []
     with open(path, 'r') as datafile:
         file = datafile.readlines()
@@ -136,7 +142,7 @@ def readfile(path):
     for position, line in enumerate(file):
         if position == 0:
             vertices, edges = line.split()
-            print(vertices + " vertices and " + edges + " edges")
+            #print(vertices + " vertices and " + edges + " edges")
             edges = int(edges)
             vertices = int(vertices)
             edgecount = edges
@@ -152,15 +158,15 @@ def readfile(path):
                 i = i + 1
             edgelist.append(l)
 
-        elif position == (length - 1):
-            print("sum of MST should equal " + line)
+        # elif position == (length - 1):
+        #     print("sum of MST should equal " + line)
 
     datafile.close()
     return edgelist, vertices
 
 #Generate animation
 def init_graphics(win, edgelist, vertices):
-    print("initiating graphics...")
+    #print("initiating graphics...")
     n = len(edgelist)
     pts = generate_points(vertices)
     diam = 8
@@ -201,7 +207,7 @@ def init_graphics(win, edgelist, vertices):
     return(cirs,lines)
 
 def generate_points(n):
-    print("generating random points...")
+    #print("generating random points...")
     pts = [ [] for i in range(n)] #list to store coordinates
     for i in range(n):
         x = random.randint(20,740)
@@ -218,16 +224,25 @@ def main():
     parser.add_argument('-animation', '-a', type=strtobool, default=True)
     args = parser.parse_args()
 
-    filepath = args.input
+    filepath = "MST-Test-Files/" + args.input
     edgelist, vertices = readfile(filepath)
 
     edges = []
     for e in edgelist:
         edges.append(Edge(e[0], e[1], e[2]))
 
-    A = args.animation
-    graph = Graph(vertices, edges, A)
-    graph.Kruskal(A)
+    print("\n", "##### KRUSKAL #####")
+    print("INPUT: " + args.input)
+    begin = datetime.datetime.now()
+    graph = Graph(vertices, edges, args.animation)
+    MST = graph.Kruskal(args.animation)
+    print("MST: " + str(MST))
+    total_time = datetime.datetime.now() - begin
+    print("RUNTIME: " + str(total_time))
+
+    with open('tests.csv', 'a', newline='') as csvfile:
+        test = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        test.writerow(['kruskal', args.input, total_time])
 
 if __name__ == "__main__" :
     main()

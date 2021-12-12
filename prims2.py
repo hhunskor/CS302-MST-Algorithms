@@ -9,6 +9,9 @@ import sys
 import random
 from graphics import *
 import math
+import argparse
+from distutils.util import strtobool
+import csv
 
 def fileRead(filename):
     
@@ -210,7 +213,23 @@ def init_graphics(win, edge_list, vertices):
     
     return(circles, lines)
 
-begin = datetime.datetime.now()
-print(prims('Int-6-10.txt', True))
-total_time = datetime.datetime.now() - begin
-print(str(total_time))
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-input', '-i', type=str, default='Int-6-10.txt',
+                        help='Data input file, Default [Int-6-10.txt]')
+    parser.add_argument('-animation', '-a', type=strtobool, default=True)
+    args = parser.parse_args()
+
+    print("\n", "##### PRIM MINHEAP #####"_)
+    begin = datetime.datetime.now()
+    MST = prims("MST-Test-Files/" + args.input, args.animation)
+    print("MST: " + str(MST))
+    total_time = datetime.datetime.now() - begin
+    print("TIME: " + str(total_time))
+
+    with open('tests.csv', 'a', newline='') as csvfile:
+        test = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        test.writerow(['prim_minheap', args.input, total_time])
+
+if __name__ == "__main__" :
+    main()
