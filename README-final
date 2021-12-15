@@ -9,8 +9,8 @@ Notes about our programs:
 Each program implements the graphics package, graphics.py, to animate its
 corresponding algorithm. Note that our programs only effectively animate the
 test file 'Int-40-80.txt' and a test file that Wright created called
-'Int-6-10.txt'. Hayden's and Tom's programs will still run the animations for
-all other files, but it will look like a complete mess.
+'Int-6-10.txt'. Our programs can run the animations for all other files, 
+but it's not pretty or informative.
 
 Each time you run a program, it will output three things:
   - Name of the input .txt file
@@ -70,4 +70,14 @@ respectively. Similarly, both programs also had faster run times on
 
 Otherwise, in all honesty, there isn't a whole lot of consistency in how the
 run times increased for each program, but some of the general trends are
-reflected in the differences between sparse and dense files.
+reflected in the differences between sparse and dense files. For sanity sake,
+we ran a linear regression analysis on runtimes on all of our test data using
+data_analysis.ipynb with the following results:
+  - Prim Arrays R value, time/V against V:  0.936064420341668
+  - Prim Minheap R value, time/log(V) against E:  0.9978707970457209
+  - Kruskal R value, time/log(V) against E:  0.9999296646430175
+It's clear that the algorithms with more efficient data structures perform much
+closer to their theoretical runtimes. If this was a data structures or 
+programming languages course, we could dive into a deeper explanation of 
+efficiency, but it's not so we'll end our analysis here.
+
