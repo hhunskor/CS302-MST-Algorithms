@@ -76,6 +76,7 @@ data_analysis.ipynb with the following results:
   - Prim Arrays R value, time/V against V:  0.936064420341668
   - Prim Minheap R value, time/log(V) against E:  0.9978707970457209
   - Kruskal R value, time/log(V) against E:  0.9999296646430175
+
 It's clear that the algorithms with more efficient data structures perform much
 closer to their theoretical runtimes. If this was a data structures or 
 programming languages course, we could dive into a deeper explanation of 
