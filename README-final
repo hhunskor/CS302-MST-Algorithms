@@ -1,4 +1,4 @@
-PRIMS IMPLEMENTATION PROJECT: READ ME FILE
+GROUP IMPLEMENTATION PROJECT: READ ME FILE
 
 Group members and corresponding implementation:
   - Hayden Hunskor: Prim's algorithm using a min heap priority queue
@@ -43,7 +43,7 @@ Run time analysis:
 Below are the theoretical run times of each algorithm, using E to represent the
 number of edges and V to represent the number of vertices:
   - Prim's w/ min heap priority queue: O(ElogV)
-  - Prim's w/ arrays: O(V^2) is possible, but Wright's runs in O(V^3) we think
+  - Prim's w/ arrays: O(V^2)
   - Kruskal's w/ union by rank and path compression: O(ElogV)
 
 The problem with comparing actual run times is that each of our programs has
@@ -56,8 +56,8 @@ will run (comparatively) faster on denser graphs than sparse ones, and Prim's
 with min heap and Kruskal's will run (comparatively) faster on sparser graphs
 than denser ones. For example, Wright's program has a significantly shorter run
 time for 'Int-500-dense' than 'Int-1000-2000'. This makes sense given that the
-theoretical run time of 500-dense would be O((500^2)^3) or O(1.56 * 10^16) and
-the theoretical run time of 1000-2000 would be O(1000^3) or O(1,000,000,000).
+theoretical run time of 500-dense would be O((500^2)) and
+the theoretical run time of 1000-2000 would be O(1000^2).
 The same trend appeared for the run times of 'Real-500-dense' vs.
 'Real-1000-2000' - that is, Prim's with arrays was faster on 500-dense than
 1000-2000.
@@ -69,7 +69,5 @@ respectively. Similarly, both programs also had faster run times on
 'Real-1000-2000' than 'Real-500-dense'.
 
 Otherwise, in all honesty, there isn't a whole lot of consistency in how the
-run times increased for each program. I think we would've observed comparatively
-much faster run times for Prim's with arrays on test files like 'Int-1000-dense'
-and 'Real-1000-dense' if Wright's implementation actually ran in O(V^2) rather
-than O(V^3).
+run times increased for each program, but some of the general trends are
+reflected in the differences between sparse and dense files.
