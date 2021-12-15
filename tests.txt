@@ -1,13 +1,13 @@
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Int-6-10.txt
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Int-40-80.txt
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Int-500-dense.txt
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Int-1000-2000.txt
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Int-1000-dense.txt
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Real-50-100.txt
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Real-500-1000.txt
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Real-500-dense.txt
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Real-1000-2000.txt
-TK_SILENCE_DEPRECATION=1 python3 primlist.py -a False -i Real-1000-dense.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Int-6-10.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Int-40-80.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Int-500-dense.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Int-1000-2000.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Int-1000-dense.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Real-50-100.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Real-500-1000.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Real-500-dense.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Real-1000-2000.txt
+TK_SILENCE_DEPRECATION=1 python3 pmst.py -a False -i Real-1000-dense.txt
 
 TK_SILENCE_DEPRECATION=1 python3 prims_mhpq.py -a False -i Int-6-10.txt
 TK_SILENCE_DEPRECATION=1 python3 prims_mhpq.py -a False -i Int-40-80.txt
